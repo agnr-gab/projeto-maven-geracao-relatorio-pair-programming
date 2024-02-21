@@ -1,49 +1,40 @@
 package br.com.softplan.report.application;
 
-import java.util.Iterator;
 import java.util.List;
 
-public class GeradorObservacao { 
+public class GeradorObservacao {
 
-	//Textos pré-definidos
-	static final String umoNota = "Fatura da nota fiscal de simples remessa: ";
-	//Identificador da entidade
-	String t;
-		
-	//Gera observações, com texto pre-definido, incluindo os números, das notas fiscais, recebidos no parâmetro
-	public String geraObservacao(List args1) 
-	{
-		t = "";
-		if (!args1.isEmpty()) 
-		{
-			return retornaCodigos(args1) + ".";
-		}		
-		return "";		
-	}
+    static final String MSG_UMA_NOTA = "Fatura da nota fiscal de simples remessa: ";
 
-	//Cria observação
-	private String retornaCodigos(List lista2) {
-		if (lista2.size() >= 2) {
-			t = "Fatura das notas fiscais de simples remessa: ";
-		} else {
-			t = umoNota;
-		}
-		
-		//Acha separador
-		StringBuilder c = new StringBuilder();
-		for (Iterator<Integer> iterator=lista2.iterator();iterator.hasNext();) {
-			Integer t2 = iterator.next();
-			String s = "";
-			if( c.toString() == null || c.toString().length() <= 0 )
-				s =  "";
-				else if( iterator.hasNext() )
-					s =  ", ";
-				else
-					s =  " e ";
-			
-			c.append(s + t2);
-		}
-		
-		return t + c;
-	}
+    static final String MSG_MULTIPLAS_NOTAS = "Fatura das notas fiscais de simples remessa: ";
+
+    public String geraObservacao(List<?> numerosNotaFiscal) {
+
+        if (numerosNotaFiscal == null || numerosNotaFiscal.isEmpty()) {
+
+            return "";
+        }
+        String observacao = "";
+
+        if (numerosNotaFiscal.size() == 1) {
+            observacao = MSG_UMA_NOTA + numerosNotaFiscal.get(0);
+
+        } else {
+            observacao = MSG_MULTIPLAS_NOTAS;
+
+            for (int i = 0; i < numerosNotaFiscal.size(); i++) {
+                observacao += numerosNotaFiscal.get(i);
+
+                if (i < numerosNotaFiscal.size() - 2) {
+                    observacao += ", ";
+                } else if (i == numerosNotaFiscal.size() - 2) {
+                    observacao += " e ";
+                }
+
+
+            }
+
+        }
+        return observacao + ".";
+    }
 }
