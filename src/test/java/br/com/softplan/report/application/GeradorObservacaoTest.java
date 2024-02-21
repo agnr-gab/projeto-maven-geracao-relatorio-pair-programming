@@ -1,8 +1,10 @@
 package br.com.softplan.report.application;
 
+import br.com.softplan.report.model.NotaFiscal;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +55,26 @@ public class GeradorObservacaoTest {
         String observacao = geradorObservacao.geraObservacao(numerosNotaFiscal);
 
         assertEquals("Fatura das notas fiscais de simples remessa: 1, 2, 3, 4 e 5.", observacao);
+    }
+
+    @Test
+    public void deve_gerar_observacao_com_uma_nota_fiscal() {
+        List<NotaFiscal> numerosNotaFiscal = asList(new NotaFiscal(1L, new BigDecimal(10)));
+        String observacao = geradorObservacao.geraObservacao(numerosNotaFiscal);
+
+        assertEquals("Fatura da nota fiscal de simples remessa: 1 cujo valor é R$ 10.", observacao);
+
+    }
+
+    @Test
+    public void deve_gerar_observacao_com_notas_fiscais() {
+        List<NotaFiscal> numerosNotaFiscal = asList(new NotaFiscal(1L, new BigDecimal(10)),
+                new NotaFiscal(2L, new BigDecimal(20)));
+        String observacao = geradorObservacao.geraObservacao(numerosNotaFiscal);
+
+        assertEquals("Fatura das notas fiscais de simples remessa: 1 cujo valor é R$ 10 e 2 cujo valor é R$ 20."
+                , observacao);
+
     }
 
 }
